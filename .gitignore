@@ -108,3 +108,6 @@ ipch/
 *.db-wal
 *.sqlite
 *.sqlite3
+
+# Large SQL scripts
+script.sql
