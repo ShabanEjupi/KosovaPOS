@@ -13,7 +13,9 @@ namespace KosovaPOS
         {
             base.OnStartup(e);
             
-            var logPath = @"C:\Users\Administrator\POS\startup_errors.log";
+            // Use application directory for logs
+            var appDirectory = System.IO.Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location) ?? ".";
+            var logPath = System.IO.Path.Combine(appDirectory, "startup_errors.log");
             
             // Global exception handlers
             AppDomain.CurrentDomain.UnhandledException += (s, args) =>

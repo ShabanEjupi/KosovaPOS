@@ -58,7 +58,7 @@
     <sys:String x:Key="DeleteArticle">Fshi artikullin (Alt+F)</sys:String>
     <sys:String x:Key="RefreshList">Rifresko listën (Alt+R)</sys:String>
     <sys:String x:Key="ExportToExcel">Eksporto në Excel (Alt+E)</sys:String>
-    <sys:String x:Key="PrintList">Printo listën (Alt+F)</sys:String>
+    <sys:String x:Key="PrintList">Printo listën (Alt+P)</sys:String>
     <sys:String x:Key="PrintBarcode">Printo barkodë (Alt+B)</sys:String>
     <sys:String x:Key="Unit">Njësia</sys:String>
     <sys:String x:Key="Pack">Paketa</sys:String>

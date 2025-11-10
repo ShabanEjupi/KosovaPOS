@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Windows;
@@ -123,20 +124,20 @@ namespace KosovaPOS.Windows
             }
             else if (e.Key == Key.F9)
             {
-                // Switch to Fiscal receipt
-                FiscalReceiptRadio.IsChecked = true;
+                // Toggle Fiscal receipt checkbox
+                FiscalReceiptCheckBox.IsChecked = !FiscalReceiptCheckBox.IsChecked;
                 e.Handled = true;
             }
             else if (e.Key == Key.F11)
             {
-                // Switch to Simple receipt
-                SimpleReceiptRadio.IsChecked = true;
+                // Toggle Simple receipt checkbox
+                SimpleReceiptCheckBox.IsChecked = !SimpleReceiptCheckBox.IsChecked;
                 e.Handled = true;
             }
             else if (e.Key == Key.F12)
             {
-                // Switch to Waybill
-                WaybillReceiptRadio.IsChecked = true;
+                // Toggle Waybill checkbox
+                WaybillReceiptCheckBox.IsChecked = !WaybillReceiptCheckBox.IsChecked;
                 e.Handled = true;
             }
             else if (e.KeyboardDevice.Modifiers == ModifierKeys.Control && e.Key == Key.Z)
@@ -290,23 +291,24 @@ namespace KosovaPOS.Windows
                 
                 _currentReceipt.TaxAmount = _receiptItems.Sum(i => i.VATValue);
                 
-                // Get receipt type from radio buttons
-                if (FiscalReceiptRadio.IsChecked == true)
+                // Determine which receipt types are selected via checkboxes
+                List<ReceiptType> selectedReceiptTypes = new List<ReceiptType>();
+                if (FiscalReceiptCheckBox.IsChecked == true)
+                    selectedReceiptTypes.Add(ReceiptType.Fiscal);
+                if (SimpleReceiptCheckBox.IsChecked == true)
+                    selectedReceiptTypes.Add(ReceiptType.Simple);
+                if (WaybillReceiptCheckBox.IsChecked == true)
+                    selectedReceiptTypes.Add(ReceiptType.Waybill);
+                
+                // If no receipt type is selected, default to Fiscal
+                if (selectedReceiptTypes.Count == 0)
                 {
-                    _currentReceipt.ReceiptType = ReceiptType.Fiscal;
+                    selectedReceiptTypes.Add(ReceiptType.Fiscal);
+                    FiscalReceiptCheckBox.IsChecked = true;
                 }
-                else if (SimpleReceiptRadio.IsChecked == true)
-                {
-                    _currentReceipt.ReceiptType = ReceiptType.Simple;
-                }
-                else if (WaybillReceiptRadio.IsChecked == true)
-                {
-                    _currentReceipt.ReceiptType = ReceiptType.Waybill;
-                }
-                else
-                {
-                    _currentReceipt.ReceiptType = ReceiptType.Fiscal; // Default
-                }
+                
+                // Set the primary receipt type (first selected)
+                _currentReceipt.ReceiptType = selectedReceiptTypes[0];
                 
                 // Save to database first
                 using (var context = new POSDbContext())
@@ -335,44 +337,64 @@ namespace KosovaPOS.Windows
                     context.SaveChanges();
                 }
                 
-                // Print receipt based on type
-                if (_currentReceipt.ReceiptType == ReceiptType.Fiscal)
+                // Print receipts for each selected type
+                var isFiscal = bool.Parse(Environment.GetEnvironmentVariable("FISCAL_ENABLED") ?? "false");
+                
+                foreach (var receiptType in selectedReceiptTypes)
                 {
-                    var isFiscal = bool.Parse(Environment.GetEnvironmentVariable("FISCAL_ENABLED") ?? "false");
-                    
-                    if (isFiscal)
+                    // Create a copy of the receipt for each type
+                    var receiptToPrint = new Receipt
                     {
-                        try
+                        Id = _currentReceipt.Id,
+                        ReceiptNumber = _currentReceipt.ReceiptNumber,
+                        Date = _currentReceipt.Date,
+                        BuyerName = _currentReceipt.BuyerName,
+                        Remark = _currentReceipt.Remark,
+                        Items = _currentReceipt.Items,
+                        TotalAmount = _currentReceipt.TotalAmount,
+                        PaidAmount = _currentReceipt.PaidAmount,
+                        LeftAmount = _currentReceipt.LeftAmount,
+                        PaymentMethod = _currentReceipt.PaymentMethod,
+                        TaxAmount = _currentReceipt.TaxAmount,
+                        ReceiptType = receiptType,
+                        CashierNumber = _currentReceipt.CashierNumber,
+                        CashierName = _currentReceipt.CashierName
+                    };
+                    
+                    // Print based on type
+                    if (receiptType == ReceiptType.Fiscal)
+                    {
+                        if (isFiscal)
                         {
-                            var fiscalService = ServiceLocator.Instance.FiscalPrinter;
-                            var filePath = fiscalService.GenerateFiscalReceipt(_currentReceipt);
-                            fiscalService.SendToFiscalPrinter(filePath);
-                            _currentReceipt.IsFiscal = true;
-                            _currentReceipt.FiscalFilePath = filePath;
+                            try
+                            {
+                                var fiscalService = ServiceLocator.Instance.FiscalPrinter;
+                                var filePath = fiscalService.GenerateFiscalReceipt(receiptToPrint);
+                                fiscalService.SendToFiscalPrinter(filePath);
+                                _currentReceipt.IsFiscal = true;
+                                _currentReceipt.FiscalFilePath = filePath;
+                            }
+                            catch (Exception ex)
+                            {
+                                MessageBox.Show($"Gabim në printim fiskal: {ex.Message}\nDo të printohet si faturë jo-fiskale.", 
+                                    "Paralajmërim", MessageBoxButton.OK, MessageBoxImage.Warning);
+                                
+                                var receiptService = ServiceLocator.Instance.ReceiptPrinter;
+                                receiptService.PrintNonFiscalReceipt(receiptToPrint);
+                            }
                         }
-                        catch (Exception ex)
+                        else
                         {
-                            MessageBox.Show($"Gabim në printim fiskal: {ex.Message}\nDo të printohet si faturë jo-fiskale.", 
-                                "Paralajmërim", MessageBoxButton.OK, MessageBoxImage.Warning);
-                            
                             var receiptService = ServiceLocator.Instance.ReceiptPrinter;
-                            receiptService.PrintNonFiscalReceipt(_currentReceipt);
-                            _currentReceipt.IsFiscal = false;
+                            receiptService.PrintNonFiscalReceipt(receiptToPrint);
                         }
                     }
                     else
                     {
+                        // Simple receipt or Waybill - always use non-fiscal printer
                         var receiptService = ServiceLocator.Instance.ReceiptPrinter;
-                        receiptService.PrintNonFiscalReceipt(_currentReceipt);
-                        _currentReceipt.IsFiscal = false;
+                        receiptService.PrintNonFiscalReceipt(receiptToPrint);
                     }
-                }
-                else
-                {
-                    // Simple receipt or Waybill - always use non-fiscal printer
-                    var receiptService = ServiceLocator.Instance.ReceiptPrinter;
-                    receiptService.PrintNonFiscalReceipt(_currentReceipt);
-                    _currentReceipt.IsFiscal = false;
                 }
                 
                 _currentReceipt.IsPrinted = true;
@@ -513,6 +535,12 @@ namespace KosovaPOS.Windows
             }
         }
         
+        private void ReprintReceiptsButton_Click(object sender, RoutedEventArgs e)
+        {
+            var reprintWindow = new ReceiptReprintWindow();
+            reprintWindow.ShowDialog();
+        }
+        
         private void ZReportButton_Click(object sender, RoutedEventArgs e)
         {
             var result = MessageBox.Show("A jeni i sigurt që doni të gjeneroni Z-Raportin?\nKy veprim do të mbyllë ditën fiskale!", 
@@ -568,7 +596,7 @@ namespace KosovaPOS.Windows
                 // Create a window to show the sold articles
                 var soldWindow = new Window
                 {
-                    Title = "Raporti i Artikujve të Shitur - Sot",
+                    Title = "Raporti i artikujve të shitur - sot",
                     Width = 1000,
                     Height = 600,
                     WindowStartupLocation = WindowStartupLocation.CenterOwner,
@@ -590,7 +618,7 @@ namespace KosovaPOS.Windows
                 var headerPanel = new System.Windows.Controls.StackPanel();
                 var titleText = new System.Windows.Controls.TextBlock
                 {
-                    Text = "📊 Raporti i Artikujve të Shitur",
+                    Text = "📊 Raporti i artikujve të shitur",
                     FontSize = 20,
                     FontWeight = FontWeights.Bold,
                     Foreground = (System.Windows.Media.Brush)Application.Current.Resources["PrimaryColor"]
@@ -630,7 +658,7 @@ namespace KosovaPOS.Windows
                 });
                 dataGrid.Columns.Add(new System.Windows.Controls.DataGridTextColumn
                 {
-                    Header = "Emri i Artikullit",
+                    Header = "Emri i artikullit",
                     Binding = new System.Windows.Data.Binding("ArticleName"),
                     Width = new System.Windows.Controls.DataGridLength(1, System.Windows.Controls.DataGridLengthUnitType.Star)
                 });
@@ -648,13 +676,13 @@ namespace KosovaPOS.Windows
                 });
                 dataGrid.Columns.Add(new System.Windows.Controls.DataGridTextColumn
                 {
-                    Header = "Vlera Totale (€)",
+                    Header = "Vlera totale (€)",
                     Binding = new System.Windows.Data.Binding("TotalValue") { StringFormat = "N2" },
                     Width = new System.Windows.Controls.DataGridLength(130)
                 });
                 dataGrid.Columns.Add(new System.Windows.Controls.DataGridTextColumn
                 {
-                    Header = "Nr. Transaksioneve",
+                    Header = "Nr. transaksioneve",
                     Binding = new System.Windows.Data.Binding("TransactionCount"),
                     Width = new System.Windows.Controls.DataGridLength(140)
                 });

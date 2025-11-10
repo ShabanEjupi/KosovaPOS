@@ -155,7 +155,7 @@
                                         <RowDefinition Height="Auto"/>
                                         <RowDefinition Height="*"/>
                                     </Grid.RowDefinitions>
-                                    <TextBlock Grid.Row="0" Text="⭐ TOP 10 Produktet më të Shitura" 
+                                    <TextBlock Grid.Row="0" Text="⭐ TOP 10 produktet më të shitura" 
                                                FontSize="18" FontWeight="Bold" Margin="0,0,0,15"/>
                                     <lvc:CartesianChart Grid.Row="1" x:Name="TopProductsChart"/>
                                 </Grid>

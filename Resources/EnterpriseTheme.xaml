@@ -32,6 +32,7 @@
     <DropShadowEffect x:Key="Elevation2" ShadowDepth="2" Direction="270" BlurRadius="6" Opacity="0.25"/>
     <DropShadowEffect x:Key="Elevation3" ShadowDepth="4" Direction="270" BlurRadius="8" Opacity="0.3"/>
     <DropShadowEffect x:Key="Elevation4" ShadowDepth="6" Direction="270" BlurRadius="12" Opacity="0.35"/>
+    <DropShadowEffect x:Key="CardShadow" ShadowDepth="3" Direction="270" BlurRadius="8" Opacity="0.25" Color="#000000"/>
 
     <!-- Enterprise Button Style -->
     <Style x:Key="EnterpriseButton" TargetType="Button">

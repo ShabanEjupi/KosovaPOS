@@ -17,6 +17,13 @@ namespace KosovaPOS.Windows
             LoadReportsData();
         }
         
+        private void Refresh_Click(object sender, RoutedEventArgs e)
+        {
+            LoadReportsData();
+            MessageBox.Show("Të dhënat u rifreskuan me sukses!", "Rifreskuar",
+                MessageBoxButton.OK, MessageBoxImage.Information);
+        }
+        
         private void LoadReportsData()
         {
             try

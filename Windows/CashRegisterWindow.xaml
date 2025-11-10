@@ -173,14 +173,14 @@
                     <!-- Receipt Type Selection (F9/F10/F11) -->
                     <TextBlock Text="Lloji i Faturës (F9/F10/F11)" FontWeight="Bold" Margin="0,10,0,5"/>
                     <StackPanel Margin="0,0,0,10">
-                        <RadioButton x:Name="FiscalReceiptRadio" Content="🧾 Fiskale" 
-                                   IsChecked="True" GroupName="ReceiptType" 
+                        <CheckBox x:Name="FiscalReceiptCheckBox" Content="🧾 Fiskale" 
+                                   IsChecked="True" 
                                    FontSize="13" Padding="5" Margin="0,2"/>
-                        <RadioButton x:Name="SimpleReceiptRadio" Content="📄 E thjeshtë" 
-                                   GroupName="ReceiptType" 
+                        <CheckBox x:Name="SimpleReceiptCheckBox" Content="📄 E thjeshtë" 
+                                   IsChecked="False" 
                                    FontSize="13" Padding="5" Margin="0,2"/>
-                        <RadioButton x:Name="WaybillReceiptRadio" Content="📋 Fletëhyrje" 
-                                   GroupName="ReceiptType" 
+                        <CheckBox x:Name="WaybillReceiptCheckBox" Content="📋 Fletëhyrje" 
+                                   IsChecked="False" 
                                    FontSize="13" Padding="5" Margin="0,2"/>
                     </StackPanel>
                     
@@ -240,6 +240,10 @@
                             Style="{StaticResource FunctionButton}" Width="150"
                             Background="#2196F3" Foreground="White"
                             Click="CopyButton_Click"/>
+                    <Button x:Name="ReprintReceiptsButton" Content="🧾 Rishtyp Faturat" 
+                            Style="{StaticResource FunctionButton}" Width="180"
+                            Background="#673AB7" Foreground="White"
+                            Click="ReprintReceiptsButton_Click"/>
                 </WrapPanel>
                 
                 <!-- Function Buttons Row 2 -->
@@ -258,19 +262,52 @@
                             Click="DiscardReceiptButton_Click"/>
                 </WrapPanel>
                 
-                <!-- Fiscal Reports -->
-                <Expander Header="{DynamicResource FiscalReports}" IsExpanded="False" Margin="0,10,0,0">
-                    <WrapPanel>
-                        <Button x:Name="ZReportButton" Content="{DynamicResource ZReport}" 
-                                Style="{StaticResource FunctionButton}" Width="200"
-                                Click="ZReportButton_Click"/>
-                        <Button x:Name="XReportButton" Content="{DynamicResource XReport}" 
-                                Style="{StaticResource FunctionButton}" Width="200"
-                                Click="XReportButton_Click"/>
-                        <Button x:Name="SoldArticlesButton" Content="{DynamicResource SoldArticles}" 
-                                Style="{StaticResource FunctionButton}" Width="200"
-                                Click="SoldArticlesButton_Click"/>
-                    </WrapPanel>
+                <!-- Fiscal Reports - Collapsed by default with better styling -->
+                <Expander Header="📊 Raportet fiskale (Përdorni me kujdes)" 
+                          IsExpanded="False" 
+                          Margin="0,10,0,0"
+                          Background="#FFF3E0"
+                          BorderBrush="#FF9800"
+                          BorderThickness="2"
+                          Padding="5">
+                    <Expander.HeaderTemplate>
+                        <DataTemplate>
+                            <StackPanel Orientation="Horizontal">
+                                <TextBlock Text="{Binding}" 
+                                           FontWeight="SemiBold" 
+                                           FontSize="14"
+                                           Foreground="#E65100"/>
+                            </StackPanel>
+                        </DataTemplate>
+                    </Expander.HeaderTemplate>
+                    <StackPanel Margin="5">
+                        <TextBlock Text="⚠️ Këto raporte janë për qëllime fiskale dhe duhet të përdoren vetëm në fund të ditës ose sipas nevojës ligjore." 
+                                   TextWrapping="Wrap" 
+                                   FontSize="11" 
+                                   Foreground="#E65100" 
+                                   Margin="0,0,0,10"
+                                   FontStyle="Italic"/>
+                        <WrapPanel>
+                            <Button x:Name="ZReportButton" Content="📋 Raporti Z (Mbyllës)" 
+                                    Style="{StaticResource FunctionButton}" Width="200"
+                                    Background="#D32F2F" Foreground="White"
+                                    Click="ZReportButton_Click"
+                                    Margin="0,0,5,5"
+                                    ToolTip="Raport mbyllës që zerifikoi dhe rivendos numratorin fiskal"/>
+                            <Button x:Name="XReportButton" Content="📊 Raporti X (Informativ)" 
+                                    Style="{StaticResource FunctionButton}" Width="200"
+                                    Background="#1976D2" Foreground="White"
+                                    Click="XReportButton_Click"
+                                    Margin="0,0,5,5"
+                                    ToolTip="Raport informativ pa zerifikuar numratorin"/>
+                            <Button x:Name="SoldArticlesButton" Content="📦 Artikujt e Shitur" 
+                                    Style="{StaticResource FunctionButton}" Width="200"
+                                    Background="#388E3C" Foreground="White"
+                                    Click="SoldArticlesButton_Click"
+                                    Margin="0,0,5,5"
+                                    ToolTip="Shfaq listën e të gjithë artikujve të shitur sot"/>
+                        </WrapPanel>
+                    </StackPanel>
                 </Expander>
                 
                 <!-- Tax Display -->

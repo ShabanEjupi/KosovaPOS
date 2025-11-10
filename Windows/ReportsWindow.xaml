@@ -1,6 +1,7 @@
 <Window x:Class="KosovaPOS.Windows.ReportsWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:System="clr-namespace:System;assembly=mscorlib"
         Title="Raportet" Height="700" Width="1100"
         WindowStartupLocation="CenterScreen"
         Background="{StaticResource BackgroundColor}">
@@ -14,12 +15,24 @@
         
         <!-- Header -->
         <Border Grid.Row="0" Style="{StaticResource ModernCard}" Margin="0,0,0,20">
-            <StackPanel>
-                <TextBlock Text="📈 Raportet fiskale dhe financiare" FontSize="28" FontWeight="Bold" 
-                           Foreground="{StaticResource PrimaryColor}"/>
-                <TextBlock Text="Raportet e detajuara për biznesin tuaj" FontSize="14" 
-                           Foreground="{StaticResource TextSecondary}" Margin="0,5,0,0"/>
-            </StackPanel>
+            <Grid>
+                <StackPanel>
+                    <TextBlock Text="📈 Raportet fiskale dhe financiare" FontSize="28" FontWeight="Bold" 
+                               Foreground="{StaticResource PrimaryColor}"/>
+                    <TextBlock Text="Raportet e detajuara për biznesin tuaj - Gjeneruar më:" FontSize="14" 
+                               Foreground="{StaticResource TextSecondary}" Margin="0,5,0,0"/>
+                    <TextBlock x:Name="LastUpdatedText" Text="{Binding Source={x:Static System:DateTime.Now}, StringFormat='dd/MM/yyyy HH:mm'}" 
+                               FontSize="14" FontWeight="SemiBold"
+                               Foreground="{StaticResource PrimaryColor}" Margin="0,2,0,0"/>
+                </StackPanel>
+                <Button Content="🔄 Rifresko" 
+                        HorizontalAlignment="Right" VerticalAlignment="Center"
+                        Style="{StaticResource ModernButton}"
+                        Background="{StaticResource SuccessColor}"
+                        Foreground="White"
+                        Width="120"
+                        Click="Refresh_Click"/>
+            </Grid>
         </Border>
         
         <!-- Reports Grid -->
@@ -42,10 +55,14 @@
                             </Grid.ColumnDefinitions>
                             
                             <!-- Sales Summary -->
-                            <Border Grid.Column="0" Background="#4CAF50" CornerRadius="10" Padding="20" Margin="0,0,10,20">
+                            <Border Grid.Column="0" Background="#4CAF50" CornerRadius="15" Padding="25" Margin="0,0,10,20"
+                                    Effect="{StaticResource CardShadow}">
                                 <StackPanel>
-                                    <TextBlock Text="📊 Përmbledhja e shitjeve" FontSize="16" FontWeight="Bold" 
-                                               Foreground="White" Margin="0,0,0,15"/>
+                                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="0,0,0,15">
+                                        <TextBlock Text="�" FontSize="28" Margin="0,0,10,0"/>
+                                        <TextBlock Text="Shitjet" FontSize="20" FontWeight="Bold" 
+                                                   Foreground="White" VerticalAlignment="Center"/>
+                                    </StackPanel>
                                     
                                     <Grid Margin="0,0,0,10">
                                         <TextBlock Text="Sot:" Foreground="White"/>
@@ -78,10 +95,14 @@
                             </Border>
                             
                             <!-- Purchases Summary -->
-                            <Border Grid.Column="1" Background="#9C27B0" CornerRadius="10" Padding="20" Margin="10,0,0,20">
+                            <Border Grid.Column="1" Background="#9C27B0" CornerRadius="15" Padding="25" Margin="10,0,0,20"
+                                    Effect="{StaticResource CardShadow}">
                                 <StackPanel>
-                                    <TextBlock Text="🛒 Përmbledhja e blerjeve" FontSize="16" FontWeight="Bold" 
-                                               Foreground="White" Margin="0,0,0,15"/>
+                                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="0,0,0,15">
+                                        <TextBlock Text="🛒" FontSize="28" Margin="0,0,10,0"/>
+                                        <TextBlock Text="Blerjet" FontSize="20" FontWeight="Bold" 
+                                                   Foreground="White" VerticalAlignment="Center"/>
+                                    </StackPanel>
                                     
                                     <Grid Margin="0,0,0,10">
                                         <TextBlock Text="Sot:" Foreground="White"/>
@@ -115,10 +136,14 @@
                         </Grid>
                         
                         <!-- Profit Analysis -->
-                        <Border Background="#2196F3" CornerRadius="10" Padding="20">
+                        <Border Background="#2196F3" CornerRadius="15" Padding="25"
+                                Effect="{StaticResource CardShadow}">
                             <StackPanel>
-                                <TextBlock Text="💎 Analiza e fitimit" FontSize="16" FontWeight="Bold" 
-                                           Foreground="White" Margin="0,0,0,15"/>
+                                <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="0,0,0,20">
+                                    <TextBlock Text="💎" FontSize="28" Margin="0,0,10,0"/>
+                                    <TextBlock Text="Analiza e fitimit" FontSize="20" FontWeight="Bold" 
+                                               Foreground="White" VerticalAlignment="Center"/>
+                                </StackPanel>
                                 
                                 <Grid>
                                     <Grid.ColumnDefinitions>
