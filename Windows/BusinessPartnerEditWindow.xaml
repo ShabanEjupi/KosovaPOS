@@ -1,0 +1,96 @@
+<Window x:Class="KosovaPOS.Windows.BusinessPartnerEditWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="Partner i ri" Height="500" Width="600"
+        WindowStartupLocation="CenterScreen"
+        Background="{StaticResource BackgroundColor}">
+    
+    <Grid Margin="20">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+        
+        <TextBlock Grid.Row="0" Text="👤 Partner i ri" FontSize="24" FontWeight="Bold" 
+                   Foreground="{StaticResource PrimaryColor}" Margin="0,0,0,20"/>
+        
+        <ScrollViewer Grid.Row="1">
+            <Border Style="{StaticResource ModernCard}">
+                <StackPanel>
+                    <StackPanel Margin="0,0,0,15">
+                        <TextBlock Text="Emri:*" Margin="0,0,0,5"/>
+                        <TextBox x:Name="NameTextBox" Style="{StaticResource ModernTextBox}"/>
+                    </StackPanel>
+                    
+                    <Grid Margin="0,0,0,15">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+                        
+                        <StackPanel Grid.Column="0" Margin="0,0,10,0">
+                            <TextBlock Text="NRF (Numri fiskal):" Margin="0,0,0,5"/>
+                            <TextBox x:Name="NRFTextBox" Style="{StaticResource ModernTextBox}"/>
+                        </StackPanel>
+                        
+                        <StackPanel Grid.Column="1" Margin="10,0,0,0">
+                            <TextBlock Text="NUI:" Margin="0,0,0,5"/>
+                            <TextBox x:Name="NUITextBox" Style="{StaticResource ModernTextBox}"/>
+                        </StackPanel>
+                    </Grid>
+                    
+                    <StackPanel Margin="0,0,0,15">
+                        <TextBlock Text="Adresa:" Margin="0,0,0,5"/>
+                        <TextBox x:Name="AddressTextBox" Style="{StaticResource ModernTextBox}"/>
+                    </StackPanel>
+                    
+                    <Grid Margin="0,0,0,15">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+                        
+                        <StackPanel Grid.Column="0" Margin="0,0,10,0">
+                            <TextBlock Text="Qyteti:" Margin="0,0,0,5"/>
+                            <TextBox x:Name="CityTextBox" Style="{StaticResource ModernTextBox}"/>
+                        </StackPanel>
+                        
+                        <StackPanel Grid.Column="1" Margin="10,0,0,0">
+                            <TextBlock Text="Telefoni:" Margin="0,0,0,5"/>
+                            <TextBox x:Name="PhoneTextBox" Style="{StaticResource ModernTextBox}"/>
+                        </StackPanel>
+                    </Grid>
+                    
+                    <StackPanel Margin="0,0,0,15">
+                        <TextBlock Text="Email:" Margin="0,0,0,5"/>
+                        <TextBox x:Name="EmailTextBox" Style="{StaticResource ModernTextBox}"/>
+                    </StackPanel>
+                    
+                    <StackPanel Margin="0,0,0,15">
+                        <TextBlock Text="Lloji i partnerit:*" Margin="0,0,0,5"/>
+                        <ComboBox x:Name="PartnerTypeComboBox" Style="{StaticResource ModernComboBox}"/>
+                    </StackPanel>
+                    
+                    <CheckBox x:Name="IsActiveCheckBox" Content="Aktiv" FontSize="14" IsChecked="True"/>
+                </StackPanel>
+            </Border>
+        </ScrollViewer>
+        
+        <Grid Grid.Row="2" Margin="0,20,0,0">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="Auto"/>
+            </Grid.ColumnDefinitions>
+            
+            <Button Grid.Column="1" Content="💾 Ruaj" Style="{StaticResource ModernButton}"
+                    Click="Save_Click" Width="120" Margin="0,0,10,0"
+                    Background="{StaticResource SuccessColor}"/>
+            
+            <Button Grid.Column="2" Content="❌ Anulo" Style="{StaticResource ModernButton}"
+                    Click="Cancel_Click" Width="120" 
+                    Background="{StaticResource DangerColor}"/>
+        </Grid>
+    </Grid>
+</Window>

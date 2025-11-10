@@ -1,0 +1,229 @@
+<Window x:Class="KosovaPOS.Windows.SettingsWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="Konfigurimet" Height="650" Width="800"
+        WindowStartupLocation="CenterScreen"
+        Background="{StaticResource BackgroundColor}">
+    
+    <Grid Margin="20">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+        
+        <!-- Header -->
+        <Border Grid.Row="0" Style="{StaticResource ModernCard}" Margin="0,0,0,20">
+            <StackPanel>
+                <TextBlock Text="⚙️ Konfigurimet e sistemit" FontSize="28" FontWeight="Bold" 
+                           Foreground="{StaticResource PrimaryColor}"/>
+                <TextBlock Text="Konfiguro parametrat e aplikacionit" FontSize="14" 
+                           Foreground="{StaticResource TextSecondary}" Margin="0,5,0,0"/>
+            </StackPanel>
+        </Border>
+        
+        <!-- Settings Content -->
+        <ScrollViewer Grid.Row="1">
+            <StackPanel>
+                <!-- Business Info -->
+                <Border Style="{StaticResource ModernCard}" Margin="0,0,0,15">
+                    <StackPanel>
+                        <TextBlock Text="🏢 Informacionet e biznesit" FontSize="18" FontWeight="Bold" Margin="0,0,0,15"/>
+                        
+                        <StackPanel Margin="0,0,0,10">
+                            <TextBlock Text="Emri i biznesit:" Margin="0,0,0,5"/>
+                            <TextBox x:Name="BusinessNameTextBox" Style="{StaticResource ModernTextBox}"/>
+                        </StackPanel>
+                        
+                        <StackPanel Margin="0,0,0,10">
+                            <TextBlock Text="NRF (Numri fiskal):" Margin="0,0,0,5"/>
+                            <TextBox x:Name="BusinessNRFTextBox" Style="{StaticResource ModernTextBox}"/>
+                        </StackPanel>
+                        
+                        <StackPanel Margin="0,0,0,10">
+                            <TextBlock Text="Adresa:" Margin="0,0,0,5"/>
+                            <TextBox x:Name="BusinessAddressTextBox" Style="{StaticResource ModernTextBox}"/>
+                        </StackPanel>
+                        
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+                            
+                            <StackPanel Grid.Column="0" Margin="0,0,10,0">
+                                <TextBlock Text="Telefoni:" Margin="0,0,0,5"/>
+                                <TextBox x:Name="BusinessPhoneTextBox" Style="{StaticResource ModernTextBox}"/>
+                            </StackPanel>
+                            
+                            <StackPanel Grid.Column="1" Margin="10,0,0,0">
+                                <TextBlock Text="Email:" Margin="0,0,0,5"/>
+                                <TextBox x:Name="BusinessEmailTextBox" Style="{StaticResource ModernTextBox}"/>
+                            </StackPanel>
+                        </Grid>
+                    </StackPanel>
+                </Border>
+                
+                <!-- Fiscal Printer Settings -->
+                <Border Style="{StaticResource ModernCard}" Margin="0,0,0,15">
+                    <StackPanel>
+                        <TextBlock Text="🖨️ Konfigurimi i printerit fiskal" FontSize="18" FontWeight="Bold" Margin="0,0,0,15"/>
+                        
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+                            
+                            <StackPanel Grid.Column="0" Margin="0,0,10,0">
+                                <TextBlock Text="COM Port:" Margin="0,0,0,5"/>
+                                <TextBox x:Name="FiscalPortTextBox" Style="{StaticResource ModernTextBox}" Text="COM1"/>
+                            </StackPanel>
+                            
+                            <StackPanel Grid.Column="1" Margin="10,0,0,0">
+                                <TextBlock Text="Baud Rate:" Margin="0,0,0,5"/>
+                                <TextBox x:Name="FiscalBaudRateTextBox" Style="{StaticResource ModernTextBox}" Text="115200"/>
+                            </StackPanel>
+                        </Grid>
+                        
+                        <StackPanel Margin="0,10,0,0">
+                            <TextBlock Text="Direktoria e skedarëve fiskalë:" Margin="0,0,0,5"/>
+                            <TextBox x:Name="FiscalPathTextBox" Style="{StaticResource ModernTextBox}" Text="C:\Temp\"/>
+                        </StackPanel>
+                        
+                        <Button Content="🧪 Testo lidhjen" Style="{StaticResource ModernButton}"
+                                Click="TestFiscalPrinter_Click" Margin="0,15,0,0" Width="150" HorizontalAlignment="Left"/>
+                    </StackPanel>
+                </Border>
+                
+                <!-- Receipt Printer Settings -->
+                <Border Style="{StaticResource ModernCard}" Margin="0,0,0,15">
+                    <StackPanel>
+                        <TextBlock Text="🧾 Konfigurimi i printerit të faturave" FontSize="18" FontWeight="Bold" Margin="0,0,0,15"/>
+                        
+                        <StackPanel Margin="0,0,0,10">
+                            <TextBlock Text="Emri i printerit:" Margin="0,0,0,5"/>
+                            <ComboBox x:Name="ReceiptPrinterComboBox" Height="35" FontSize="14">
+                                <ComboBox.ItemTemplate>
+                                    <DataTemplate>
+                                        <TextBlock Text="{Binding}" Padding="5"/>
+                                    </DataTemplate>
+                                </ComboBox.ItemTemplate>
+                            </ComboBox>
+                        </StackPanel>
+                        
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+                            
+                            <StackPanel Grid.Column="0" Margin="0,0,10,0">
+                                <TextBlock Text="Gjerësia e letrës (mm):" Margin="0,0,0,5"/>
+                                <TextBox x:Name="PaperWidthTextBox" Style="{StaticResource ModernTextBox}" Text="80"/>
+                            </StackPanel>
+                            
+                            <StackPanel Grid.Column="1" Margin="10,0,0,0">
+                                <CheckBox x:Name="AutoCutCheckBox" Content="Prerje automatike" 
+                                          FontSize="14" VerticalAlignment="Bottom" Margin="0,0,0,10" IsChecked="True"/>
+                            </StackPanel>
+                        </Grid>
+                        
+                        <Button Content="🧪 Printo test" Style="{StaticResource ModernButton}"
+                                Click="TestReceiptPrinter_Click" Margin="0,15,0,0" Width="150" HorizontalAlignment="Left"/>
+                    </StackPanel>
+                </Border>
+                
+                <!-- User Permissions Settings -->
+                <Border Style="{StaticResource ModernCard}" Margin="0,0,0,15">
+                    <StackPanel>
+                        <TextBlock Text="👤 Menaxhimi i përdoruesve dhe të drejtave" FontSize="18" FontWeight="Bold" Margin="0,0,0,15"/>
+                        
+                        <StackPanel Margin="0,0,0,15">
+                            <TextBlock Text="Përdoruesi aktual:" Margin="0,0,0,5" FontWeight="Bold"/>
+                            <TextBlock x:Name="CurrentUserText" Text="Administrator (Admin)" FontSize="14" Foreground="{StaticResource SuccessColor}"/>
+                        </StackPanel>
+                        
+                        <TextBlock Text="Të drejtat e përdoruesit aktual:" FontWeight="Bold" Margin="0,0,0,10"/>
+                        
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+                            
+                            <StackPanel Grid.Column="0">
+                                <CheckBox x:Name="CanManageArticlesCheckBox" Content="Menaxho artikujt" Margin="0,5" FontSize="13" IsEnabled="False"/>
+                                <CheckBox x:Name="CanManagePurchasesCheckBox" Content="Menaxho blerjet" Margin="0,5" FontSize="13" IsEnabled="False"/>
+                                <CheckBox x:Name="CanViewReportsCheckBox" Content="Shiko raportet" Margin="0,5" FontSize="13" IsEnabled="False"/>
+                                <CheckBox x:Name="CanGiveDiscountsCheckBox" Content="Jep zbritje" Margin="0,5" FontSize="13" IsEnabled="False"/>
+                            </StackPanel>
+                            
+                            <StackPanel Grid.Column="1">
+                                <CheckBox x:Name="CanModifyPricesCheckBox" Content="Ndrysho çmimet" Margin="0,5" FontSize="13" IsEnabled="False"/>
+                                <CheckBox x:Name="CanDeleteReceiptsCheckBox" Content="Fshi faturat" Margin="0,5" FontSize="13" IsEnabled="False"/>
+                                <CheckBox x:Name="CanManageUsersCheckBox" Content="Menaxho përdoruesit" Margin="0,5" FontSize="13" IsEnabled="False"/>
+                                <StackPanel Orientation="Horizontal" Margin="0,5">
+                                    <TextBlock Text="Zbritje maks:" VerticalAlignment="Center" Margin="0,0,10,0" FontSize="13"/>
+                                    <TextBlock x:Name="MaxDiscountText" Text="0%" FontWeight="Bold" FontSize="13" Foreground="{StaticResource PrimaryColor}"/>
+                                </StackPanel>
+                            </StackPanel>
+                        </Grid>
+                        
+                        <TextBlock Text="💡 Këto të drejta mund të ndryshohen vetëm nga administratori i sistemit." 
+                                   FontSize="12" Foreground="{StaticResource WarningColor}" 
+                                   Margin="0,15,0,0" TextWrapping="Wrap"/>
+                        
+                        <TextBlock Text="Për të ndryshuar të drejtat e përdoruesve ose për të krijuar përdorues të rinj, kontaktoni administratorin." 
+                                   FontSize="11" Foreground="{StaticResource TextSecondary}" 
+                                   Margin="0,5,0,0" TextWrapping="Wrap"/>
+                    </StackPanel>
+                </Border>
+                
+                <!-- Database Settings -->
+                <Border Style="{StaticResource ModernCard}">
+                    <StackPanel>
+                        <TextBlock Text="💾 Konfigurimi i bazës së të dhënave" FontSize="18" FontWeight="Bold" Margin="0,0,0,15"/>
+                        
+                        <StackPanel Margin="0,0,0,15">
+                            <TextBlock Text="Lokacioni i bazës së të dhënave:" Margin="0,0,0,5"/>
+                            <TextBox x:Name="DatabasePathTextBox" Style="{StaticResource ModernTextBox}" 
+                                     IsReadOnly="True" Text="./Database/KosovaPOS.db"/>
+                        </StackPanel>
+                        
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+                            
+                            <Button Grid.Column="0" Content="💾 Backup i bazës" Style="{StaticResource ModernButton}"
+                                    Click="BackupDatabase_Click" Width="150" Margin="0,0,10,0"/>
+                            
+                            <Button Grid.Column="1" Content="📥 Importo të dhëna" Style="{StaticResource ModernButton}"
+                                    Click="ImportData_Click" Width="150"/>
+                        </Grid>
+                    </StackPanel>
+                </Border>
+            </StackPanel>
+        </ScrollViewer>
+        
+        <!-- Footer Buttons -->
+        <Grid Grid.Row="2" Margin="0,20,0,0">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="Auto"/>
+            </Grid.ColumnDefinitions>
+            
+            <Button Grid.Column="1" Content="💾 Ruaj konfigurimet" Style="{StaticResource ModernButton}"
+                    Click="SaveSettings_Click" Width="180" Margin="0,0,10,0"
+                    Background="{StaticResource SuccessColor}"/>
+            
+            <Button Grid.Column="2" Content="🚪 Mbyll" Style="{StaticResource ModernButton}"
+                    Click="Close_Click" Width="120" 
+                    Background="{StaticResource DangerColor}"/>
+        </Grid>
+    </Grid>
+</Window>

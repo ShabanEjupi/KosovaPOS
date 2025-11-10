@@ -1,0 +1,142 @@
+<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:sys="clr-namespace:System;assembly=mscorlib">
+    
+    <!-- Main Window -->
+    <sys:String x:Key="AppTitle">Sistema POS - Kosovë</sys:String>
+    
+    <!-- Cash Register -->
+    <sys:String x:Key="CashRegister">Regjistri i parasë</sys:String>
+    <sys:String x:Key="BusinessName">Emri i biznesit</sys:String>
+    <sys:String x:Key="BuyerName">Emri i blerësit</sys:String>
+    <sys:String x:Key="Citizen">Qytetar</sys:String>
+    <sys:String x:Key="Remark">Vërejtje</sys:String>
+    <sys:String x:Key="Payment">Pagesa</sys:String>
+    <sys:String x:Key="Paid">Paguar</sys:String>
+    <sys:String x:Key="Left">Mbetur</sys:String>
+    <sys:String x:Key="PaymentMethod">Mënyra e pagesës</sys:String>
+    <sys:String x:Key="Cashier">Arkëtari</sys:String>
+    
+    <!-- Receipt Columns -->
+    <sys:String x:Key="Barcode">Barkodi</sys:String>
+    <sys:String x:Key="ArticleName">Emri i artikullit</sys:String>
+    <sys:String x:Key="Quantity">Sasia</sys:String>
+    <sys:String x:Key="Price">Çmimi</sys:String>
+    <sys:String x:Key="Discount">Zbritja</sys:String>
+    <sys:String x:Key="VAT">TVSH</sys:String>
+    <sys:String x:Key="DiscountValue">Vlera e zbritjes</sys:String>
+    <sys:String x:Key="Value">Vlera</sys:String>
+    <sys:String x:Key="Total">Totali</sys:String>
+    <sys:String x:Key="Taxes">Taksat</sys:String>
+    
+    <!-- Buttons -->
+    <sys:String x:Key="PrintReceipt">F5 - Printo faturën</sys:String>
+    <sys:String x:Key="Copy">F6 - Kopjo</sys:String>
+    <sys:String x:Key="ClearRow">F3 - Pastro rreshtin</sys:String>
+    <sys:String x:Key="DiscardReceipt">F10 - Anulo faturën</sys:String>
+    
+    <!-- Fiscal Reports -->
+    <sys:String x:Key="FiscalReports">Raportet fiskale</sys:String>
+    <sys:String x:Key="ZReport">Z - Raport (Ctrl+Z)</sys:String>
+    <sys:String x:Key="XReport">X - Raport (Ctrl+X)</sys:String>
+    <sys:String x:Key="SoldArticles">Artikujt e shitur (Ctrl+S)</sys:String>
+    <sys:String x:Key="ClearArticles">Pastro artikujt</sys:String>
+    <sys:String x:Key="Close">Mbyll (Alt+F4)</sys:String>
+    
+    <!-- Receipt Types -->
+    <sys:String x:Key="FiscalReceipt">Faturë fiskale</sys:String>
+    <sys:String x:Key="NonFiscalReceipt">Faturë jo-fiskale</sys:String>
+    <sys:String x:Key="SaleCoupon">Kupon shitjeje</sys:String>
+    <sys:String x:Key="Change">Kusur</sys:String>
+    <sys:String x:Key="Date">Data</sys:String>
+    
+    <!-- Articles -->
+    <sys:String x:Key="Articles">Artikujt</sys:String>
+    <sys:String x:Key="ListOfArticles">Lista e artikujve</sys:String>
+    <sys:String x:Key="AddNewArticle">Shto artikull të ri (Alt+O)</sys:String>
+    <sys:String x:Key="EditArticle">Ndrysho artikullin (Alt+N)</sys:String>
+    <sys:String x:Key="DeleteArticle">Fshi artikullin (Alt+F)</sys:String>
+    <sys:String x:Key="RefreshList">Rifresko listën (Alt+R)</sys:String>
+    <sys:String x:Key="ExportToExcel">Eksporto në Excel (Alt+E)</sys:String>
+    <sys:String x:Key="PrintList">Printo listën (Alt+F)</sys:String>
+    <sys:String x:Key="PrintBarcode">Printo barkodë (Alt+B)</sys:String>
+    <sys:String x:Key="Unit">Njësia</sys:String>
+    <sys:String x:Key="Pack">Paketa</sys:String>
+    <sys:String x:Key="SalesPrice">Çmimi i shitjes</sys:String>
+    <sys:String x:Key="Category">Kategoria</sys:String>
+    <sys:String x:Key="Supplier">Furnizuesi</sys:String>
+    <sys:String x:Key="Tickets">Biletat</sys:String>
+    <sys:String x:Key="UnitOfMeasurement">Njësia e matjes</sys:String>
+    <sys:String x:Key="POSCategories">Kategoritë POS</sys:String>
+    <sys:String x:Key="TaxTariffs">Tarifat tatimore</sys:String>
+    <sys:String x:Key="ArticleTypes">Llojet e artikujve</sys:String>
+    <sys:String x:Key="StockCondition">Gjendja e stoqit</sys:String>
+    <sys:String x:Key="InOutArticlesCard">Card in-out e artikujve</sys:String>
+    <sys:String x:Key="ListOf0Articles">Lista e artikujve 0</sys:String>
+    <sys:String x:Key="ArticlesBySupplier">Artikujt sipas furnizuesit</sys:String>
+    <sys:String x:Key="Registry">Regjistri</sys:String>
+    <sys:String x:Key="ListOfRegistry">Lista e regjistrit</sys:String>
+    <sys:String x:Key="EditingRegistry">Redaktimi i regjistrit</sys:String>
+    
+    <!-- Cash and Bank -->
+    <sys:String x:Key="CashAndBank">Kasa dhe banka</sys:String>
+    <sys:String x:Key="InOut">Hyrje/dalje</sys:String>
+    <sys:String x:Key="PaymentMethods">Mënyrat e pagesës</sys:String>
+    <sys:String x:Key="Documents">Dokumentet</sys:String>
+    <sys:String x:Key="CashDiary">Ditari i kasës</sys:String>
+    
+    <!-- Business Partners -->
+    <sys:String x:Key="BusinessPartners">Partnerët biznesorë</sys:String>
+    <sys:String x:Key="BusinessSubjects">Subjektet biznesore</sys:String>
+    <sys:String x:Key="PaymentOfSubjects">Pagesa e subjekteve</sys:String>
+    <sys:String x:Key="CardsOfSubjects">Kartelat e subjekteve</sys:String>
+    <sys:String x:Key="DocumentsBasedOnSubjects">Dokumentet sipas subjekteve</sys:String>
+    
+    <!-- Sales -->
+    <sys:String x:Key="Sales">Shitjet</sys:String>
+    <sys:String x:Key="LocalSale">Shitje vendore</sys:String>
+    <sys:String x:Key="ExportSale">Shitje eksport</sys:String>
+    <sys:String x:Key="SaleOfServices">Shitje shërbimesh</sys:String>
+    <sys:String x:Key="Payroll">Listëpagesa</sys:String>
+    <sys:String x:Key="ReturnFromSales">Kthim nga shitjet</sys:String>
+    <sys:String x:Key="ListOfCoupons">Lista e kuponave</sys:String>
+    <sys:String x:Key="ListOfLocalSales">Lista e shitjeve vendore</sys:String>
+    <sys:String x:Key="ListOfExportSales">Lista e shitjeve eksport</sys:String>
+    <sys:String x:Key="ListOfServiceSales">Lista e shitjeve shërbimesh</sys:String>
+    <sys:String x:Key="ListOfPayrolls">Lista e listëpagesave</sys:String>
+    <sys:String x:Key="ListOfOffers">Lista e ofertave</sys:String>
+    <sys:String x:Key="ListOfReturnFromSales">Lista e kthimeve nga shitjet</sys:String>
+    
+    <!-- Purchases -->
+    <sys:String x:Key="Purchases">Blerjet</sys:String>
+    <sys:String x:Key="LocalBuy">Blerje vendore</sys:String>
+    <sys:String x:Key="BuyOfExpenses">Blerje shpenzimesh</sys:String>
+    <sys:String x:Key="ImportBuy">Blerje import</sys:String>
+    <sys:String x:Key="ReturnFromBuy">Kthim nga blerjet</sys:String>
+    <sys:String x:Key="ListOfLocalBuys">Lista e blerjeve vendore</sys:String>
+    <sys:String x:Key="ListOfBuyExpenses">Lista e blerjeve shpenzimesh</sys:String>
+    <sys:String x:Key="ListOfImportBuys">Lista e blerjeve import</sys:String>
+    <sys:String x:Key="ListOfReturnFromBuy">Lista e kthimeve nga blerjet</sys:String>
+    <sys:String x:Key="SupplierName">Emri i furnizuesit</sys:String>
+    <sys:String x:Key="NRF">NRF (Numri fiskal)</sys:String>
+    
+    <!-- Common -->
+    <sys:String x:Key="Save">Ruaj</sys:String>
+    <sys:String x:Key="Cancel">Anulo</sys:String>
+    <sys:String x:Key="Search">Kërko</sys:String>
+    <sys:String x:Key="Filter">Filtro</sys:String>
+    <sys:String x:Key="Add">Shto</sys:String>
+    <sys:String x:Key="Edit">Ndrysho</sys:String>
+    <sys:String x:Key="Delete">Fshi</sys:String>
+    <sys:String x:Key="Refresh">Rifresko</sys:String>
+    <sys:String x:Key="Print">Printo</sys:String>
+    <sys:String x:Key="Export">Eksporto</sys:String>
+    <sys:String x:Key="OK">OK</sys:String>
+    <sys:String x:Key="Yes">Po</sys:String>
+    <sys:String x:Key="No">Jo</sys:String>
+    <sys:String x:Key="Confirmation">Konfirmimi</sys:String>
+    <sys:String x:Key="Error">Gabim</sys:String>
+    <sys:String x:Key="Warning">Paralajmërim</sys:String>
+    <sys:String x:Key="Information">Informacion</sys:String>
+    
+</ResourceDictionary>

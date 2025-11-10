@@ -1,0 +1,164 @@
+<Window x:Class="KosovaPOS.Windows.PurchaseEditWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="Blerje e re" Height="600" Width="900"
+        WindowStartupLocation="CenterScreen"
+        Background="{StaticResource BackgroundColor}">
+    
+    <Grid Margin="20">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+        
+        <!-- Header -->
+        <TextBlock Grid.Row="0" Text="📝 Blerje e re" FontSize="24" FontWeight="Bold" 
+                   Foreground="{StaticResource PrimaryColor}" Margin="0,0,0,20"/>
+        
+        <!-- Form -->
+        <ScrollViewer Grid.Row="1">
+            <StackPanel>
+                <!-- Document Info -->
+                <Border Style="{StaticResource ModernCard}" Margin="0,0,0,15">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                        </Grid.RowDefinitions>
+                        
+                        <StackPanel Grid.Column="0" Grid.Row="0" Margin="0,0,10,15">
+                            <TextBlock Text="Nr. Dokumentit:" Margin="0,0,0,5"/>
+                            <TextBox x:Name="DocumentNumberTextBox" Style="{StaticResource ModernTextBox}"/>
+                        </StackPanel>
+                        
+                        <StackPanel Grid.Column="1" Grid.Row="0" Margin="10,0,0,15">
+                            <TextBlock Text="Data:" Margin="0,0,0,5"/>
+                            <DatePicker x:Name="DatePicker" FontSize="14" Height="35"/>
+                        </StackPanel>
+                        
+                        <StackPanel Grid.Column="0" Grid.Row="1" Margin="0,0,10,15">
+                            <TextBlock Text="Furnizuesi:" Margin="0,0,0,5"/>
+                            <ComboBox x:Name="SupplierComboBox" Style="{StaticResource ModernComboBox}"
+                                      DisplayMemberPath="Name" SelectedValuePath="Id"/>
+                        </StackPanel>
+                        
+                        <StackPanel Grid.Column="1" Grid.Row="1" Margin="10,0,0,15">
+                            <TextBlock Text="Lloji i blerjes:" Margin="0,0,0,5"/>
+                            <ComboBox x:Name="PurchaseTypeComboBox" Style="{StaticResource ModernComboBox}"/>
+                        </StackPanel>
+                        
+                        <StackPanel Grid.Column="0" Grid.Row="2" Grid.ColumnSpan="2">
+                            <CheckBox x:Name="IsPaidCheckBox" Content="Blerja është paguar" FontSize="14"/>
+                        </StackPanel>
+                    </Grid>
+                </Border>
+                
+                <!-- Items Section -->
+                <Border Style="{StaticResource ModernCard}">
+                    <StackPanel>
+                        <TextBlock Text="Artikujt e blerjes" FontSize="18" FontWeight="Bold" Margin="0,0,0,15"/>
+                        
+                        <!-- Add Item -->
+                        <Grid Margin="0,0,0,15">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="100"/>
+                                <ColumnDefinition Width="120"/>
+                                <ColumnDefinition Width="80"/>
+                            </Grid.ColumnDefinitions>
+                            
+                            <ComboBox Grid.Column="0" x:Name="ArticleComboBox" 
+                                      Style="{StaticResource ModernComboBox}"
+                                      DisplayMemberPath="Name" SelectedValuePath="Id"
+                                      Margin="0,0,10,0"/>
+                            
+                            <TextBox Grid.Column="1" x:Name="QuantityTextBox" 
+                                     Style="{StaticResource ModernTextBox}"
+                                     Text="1" Margin="0,0,10,0"/>
+                            
+                            <TextBox Grid.Column="2" x:Name="PurchasePriceTextBox" 
+                                     Style="{StaticResource ModernTextBox}"
+                                     Text="0.00" Margin="0,0,10,0"/>
+                            
+                            <Button Grid.Column="3" Content="➕ Shto" 
+                                    Style="{StaticResource ModernButton}"
+                                    Click="AddItem_Click"/>
+                        </Grid>
+                        
+                        <!-- Items DataGrid -->
+                        <DataGrid x:Name="ItemsDataGrid" 
+                                  Style="{StaticResource POSDataGrid}"
+                                  AutoGenerateColumns="False"
+                                  Height="200">
+                            <DataGrid.Columns>
+                                <DataGridTextColumn Header="Artikulli" Binding="{Binding ArticleName}" Width="*"/>
+                                <DataGridTextColumn Header="Sasia" Binding="{Binding Quantity, StringFormat=N2}" Width="100"/>
+                                <DataGridTextColumn Header="Çmimi" Binding="{Binding PurchasePrice, StringFormat=N2}" Width="100"/>
+                                <DataGridTextColumn Header="TVSH %" Binding="{Binding VATRate, StringFormat=N0}" Width="80"/>
+                                <DataGridTextColumn Header="Totali" Binding="{Binding TotalValue, StringFormat=N2}" Width="100"/>
+                                <DataGridTemplateColumn Header="" Width="60">
+                                    <DataGridTemplateColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <Button Content="🗑️" Click="RemoveItem_Click" 
+                                                    Background="{StaticResource DangerColor}"
+                                                    Foreground="White" BorderThickness="0" Cursor="Hand"/>
+                                        </DataTemplate>
+                                    </DataGridTemplateColumn.CellTemplate>
+                                </DataGridTemplateColumn>
+                            </DataGrid.Columns>
+                        </DataGrid>
+                        
+                        <!-- Total -->
+                        <Grid Margin="0,15,0,0">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="200"/>
+                            </Grid.ColumnDefinitions>
+                            
+                            <StackPanel Grid.Column="1">
+                                <Grid Margin="0,0,0,5">
+                                    <TextBlock Text="Totali pa TVSH:" HorizontalAlignment="Left"/>
+                                    <TextBlock x:Name="SubtotalText" Text="0.00 €" HorizontalAlignment="Right" FontWeight="Bold"/>
+                                </Grid>
+                                <Grid Margin="0,0,0,5">
+                                    <TextBlock Text="TVSH:" HorizontalAlignment="Left"/>
+                                    <TextBlock x:Name="VATText" Text="0.00 €" HorizontalAlignment="Right" FontWeight="Bold"/>
+                                </Grid>
+                                <Border Margin="0,5,0,0" Background="{StaticResource PrimaryLight}" Padding="5" CornerRadius="4">
+                                    <Grid>
+                                        <TextBlock Text="TOTALI:" HorizontalAlignment="Left" FontWeight="Bold" FontSize="16"/>
+                                        <TextBlock x:Name="TotalText" Text="0.00 €" HorizontalAlignment="Right" 
+                                                   FontWeight="Bold" FontSize="16" Foreground="{StaticResource PrimaryDark}"/>
+                                    </Grid>
+                                </Border>
+                            </StackPanel>
+                        </Grid>
+                    </StackPanel>
+                </Border>
+            </StackPanel>
+        </ScrollViewer>
+        
+        <!-- Footer Buttons -->
+        <Grid Grid.Row="2" Margin="0,20,0,0">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="Auto"/>
+            </Grid.ColumnDefinitions>
+            
+            <Button Grid.Column="1" Content="💾 Ruaj" Style="{StaticResource ModernButton}"
+                    Click="Save_Click" Width="120" Margin="0,0,10,0"
+                    Background="{StaticResource SuccessColor}"/>
+            
+            <Button Grid.Column="2" Content="❌ Anulo" Style="{StaticResource ModernButton}"
+                    Click="Cancel_Click" Width="120" 
+                    Background="{StaticResource DangerColor}"/>
+        </Grid>
+    </Grid>
+</Window>

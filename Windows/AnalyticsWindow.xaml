@@ -1,0 +1,339 @@
+<Window x:Class="KosovaPOS.Windows.AnalyticsWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:lvc="clr-namespace:LiveChartsCore.SkiaSharpView.WPF;assembly=LiveChartsCore.SkiaSharpView.WPF"
+        Title="📊 Analytics &amp; Statistics" Height="800" Width="1300"
+        WindowStartupLocation="CenterScreen"
+        WindowState="Maximized"
+        Background="{StaticResource BackgroundColor}">
+    
+    <Grid Margin="20">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+        
+        <!-- Header -->
+        <Border Grid.Row="0" Style="{StaticResource ModernCard}" Margin="0,0,0,20">
+            <Grid>
+                <StackPanel>
+                    <TextBlock Text="📊 Analytics dhe statistika" FontSize="28" FontWeight="Bold" 
+                               Foreground="{StaticResource PrimaryColor}"/>
+                    <TextBlock Text="Analiza e avancuar dhe vizualizimi i të dhënave të biznesit" FontSize="14" 
+                               Foreground="{StaticResource TextSecondary}" Margin="0,5,0,0"/>
+                </StackPanel>
+                <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Center">
+                    <TextBlock Text="Periudha:" VerticalAlignment="Center" Margin="0,0,10,0"/>
+                    <ComboBox x:Name="PeriodComboBox" Width="150" SelectedIndex="0"
+                              SelectionChanged="PeriodComboBox_SelectionChanged">
+                        <ComboBoxItem Content="Sot"/>
+                        <ComboBoxItem Content="Kjo javë"/>
+                        <ComboBoxItem Content="Ky muaj"/>
+                        <ComboBoxItem Content="3 muaj"/>
+                        <ComboBoxItem Content="6 muaj"/>
+                        <ComboBoxItem Content="Ky vit"/>
+                        <ComboBoxItem Content="Të gjitha"/>
+                    </ComboBox>
+                    <Button Content="🔄 Rifresko" Style="{StaticResource ModernButton}"
+                            Click="Refresh_Click" Margin="10,0,0,0" Width="120"/>
+                </StackPanel>
+            </Grid>
+        </Border>
+        
+        <!-- Main Content -->
+        <TabControl Grid.Row="1" Style="{StaticResource {x:Type TabControl}}">
+            <!-- Sales Analysis Tab -->
+            <TabItem Header="📈 Analiza e shitjeve">
+                <ScrollViewer>
+                    <Grid Margin="10">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="350"/>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="300"/>
+                        </Grid.RowDefinitions>
+                        
+                        <!-- KPI Cards -->
+                        <Grid Grid.Row="0" Margin="0,0,0,20">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+                            
+                            <Border Grid.Column="0" Background="#4CAF50" CornerRadius="10" Padding="20" Margin="0,0,10,0">
+                                <StackPanel>
+                                    <TextBlock Text="💰 Shitjet totale" FontSize="14" Foreground="White" FontWeight="Bold"/>
+                                    <TextBlock x:Name="TotalSalesKPI" Text="0.00 €" FontSize="32" FontWeight="Bold" 
+                                               Foreground="White" Margin="0,10,0,0"/>
+                                    <TextBlock x:Name="SalesChangeKPI" Text="↑ +0% nga periudha e fundit" FontSize="11" 
+                                               Foreground="White" Margin="0,5,0,0"/>
+                                </StackPanel>
+                            </Border>
+                            
+                            <Border Grid.Column="1" Background="#2196F3" CornerRadius="10" Padding="20" Margin="0,0,10,0">
+                                <StackPanel>
+                                    <TextBlock Text="📦 Transaksionet" FontSize="14" Foreground="White" FontWeight="Bold"/>
+                                    <TextBlock x:Name="TotalTransactionsKPI" Text="0" FontSize="32" FontWeight="Bold" 
+                                               Foreground="White" Margin="0,10,0,0"/>
+                                    <TextBlock x:Name="AvgTransactionKPI" Text="Mesatare: 0.00 €" FontSize="11" 
+                                               Foreground="White" Margin="0,5,0,0"/>
+                                </StackPanel>
+                            </Border>
+                            
+                            <Border Grid.Column="2" Background="#FF9800" CornerRadius="10" Padding="20" Margin="0,0,10,0">
+                                <StackPanel>
+                                    <TextBlock Text="📊 Artikujt e shitur" FontSize="14" Foreground="White" FontWeight="Bold"/>
+                                    <TextBlock x:Name="TotalItemsSoldKPI" Text="0" FontSize="32" FontWeight="Bold" 
+                                               Foreground="White" Margin="0,10,0,0"/>
+                                    <TextBlock x:Name="UniqueProductsKPI" Text="0 produkte unike" FontSize="11" 
+                                               Foreground="White" Margin="0,5,0,0"/>
+                                </StackPanel>
+                            </Border>
+                            
+                            <Border Grid.Column="3" Background="#9C27B0" CornerRadius="10" Padding="20">
+                                <StackPanel>
+                                    <TextBlock Text="💎 Fitimi neto" FontSize="14" Foreground="White" FontWeight="Bold"/>
+                                    <TextBlock x:Name="NetProfitKPI" Text="0.00 €" FontSize="32" FontWeight="Bold" 
+                                               Foreground="White" Margin="0,10,0,0"/>
+                                    <TextBlock x:Name="ProfitMarginKPI" Text="Marzha: 0%" FontSize="11" 
+                                               Foreground="White" Margin="0,5,0,0"/>
+                                </StackPanel>
+                            </Border>
+                        </Grid>
+                        
+                        <!-- Sales Trend Chart -->
+                        <Border Grid.Row="1" Style="{StaticResource ModernCard}" Margin="0,0,0,20">
+                            <Grid>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="*"/>
+                                </Grid.RowDefinitions>
+                                <TextBlock Grid.Row="0" Text="📈 Trendi i shitjeve" FontSize="18" FontWeight="Bold" Margin="0,0,0,15"/>
+                                <lvc:CartesianChart Grid.Row="1" x:Name="SalesTrendChart" LegendPosition="Bottom"/>
+                            </Grid>
+                        </Border>
+                        
+                        <!-- Hourly Sales Pattern -->
+                        <Border Grid.Row="2" Style="{StaticResource ModernCard}" Margin="0,0,0,20">
+                            <StackPanel>
+                                <TextBlock Text="🕐 Modeli i shitjeve sipas orëve" FontSize="18" FontWeight="Bold" Margin="0,0,0,10"/>
+                                <TextBlock x:Name="PeakHoursText" Text="Orët më të ngarkuara: --" FontSize="12" 
+                                           Foreground="{StaticResource TextSecondary}"/>
+                            </StackPanel>
+                        </Border>
+                        
+                        <!-- Hourly Pattern Chart -->
+                        <Border Grid.Row="3" Style="{StaticResource ModernCard}">
+                            <lvc:CartesianChart x:Name="HourlySalesChart" LegendPosition="Bottom"/>
+                        </Border>
+                    </Grid>
+                </ScrollViewer>
+            </TabItem>
+            
+            <!-- Product Analysis Tab -->
+            <TabItem Header="📦 Analiza e produkteve">
+                <ScrollViewer>
+                    <Grid Margin="10">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="350"/>
+                            <RowDefinition Height="350"/>
+                        </Grid.RowDefinitions>
+                        
+                        <Grid Grid.Row="0" Margin="0,0,0,20">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+                            
+                            <!-- Top Products -->
+                            <Border Grid.Column="0" Style="{StaticResource ModernCard}" Margin="0,0,10,0">
+                                <Grid>
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="Auto"/>
+                                        <RowDefinition Height="*"/>
+                                    </Grid.RowDefinitions>
+                                    <TextBlock Grid.Row="0" Text="⭐ TOP 10 Produktet më të Shitura" 
+                                               FontSize="18" FontWeight="Bold" Margin="0,0,0,15"/>
+                                    <lvc:CartesianChart Grid.Row="1" x:Name="TopProductsChart"/>
+                                </Grid>
+                            </Border>
+                            
+                            <!-- Category Distribution -->
+                            <Border Grid.Column="1" Style="{StaticResource ModernCard}" Margin="10,0,0,0">
+                                <Grid>
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="Auto"/>
+                                        <RowDefinition Height="*"/>
+                                    </Grid.RowDefinitions>
+                                    <TextBlock Grid.Row="0" Text="🎯 Shitjet sipas kategorive" 
+                                               FontSize="18" FontWeight="Bold" Margin="0,0,0,15"/>
+                                    <lvc:PieChart Grid.Row="1" x:Name="CategoryPieChart" LegendPosition="Right"/>
+                                </Grid>
+                            </Border>
+                        </Grid>
+                        
+                        <!-- Product Performance Table -->
+                        <Border Grid.Row="1" Style="{StaticResource ModernCard}">
+                            <Grid>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="*"/>
+                                </Grid.RowDefinitions>
+                                <TextBlock Grid.Row="0" Text="📊 Performanca detajuar e produkteve" 
+                                           FontSize="18" FontWeight="Bold" Margin="0,0,0,15"/>
+                                <DataGrid Grid.Row="1" x:Name="ProductPerformanceGrid"
+                                          Style="{StaticResource EnterpriseDataGrid}"
+                                          AutoGenerateColumns="False" IsReadOnly="True">
+                                    <DataGrid.Columns>
+                                        <DataGridTextColumn Header="Produkti" Binding="{Binding ProductName}" Width="2*"/>
+                                        <DataGridTextColumn Header="Sasia" Binding="{Binding Quantity, StringFormat=N0}" Width="*"/>
+                                        <DataGridTextColumn Header="Vlera" Binding="{Binding Revenue, StringFormat=N2}" Width="*"/>
+                                        <DataGridTextColumn Header="Fitimi" Binding="{Binding Profit, StringFormat=N2}" Width="*"/>
+                                        <DataGridTextColumn Header="Marzha %" Binding="{Binding Margin, StringFormat=N1}" Width="*"/>
+                                    </DataGrid.Columns>
+                                </DataGrid>
+                            </Grid>
+                        </Border>
+                    </Grid>
+                </ScrollViewer>
+            </TabItem>
+            
+            <!-- Inventory Tab -->
+            <TabItem Header="📦 Analiza e stokut">
+                <ScrollViewer>
+                    <Grid Margin="10">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="350"/>
+                            <RowDefinition Height="*"/>
+                        </Grid.RowDefinitions>
+                        
+                        <!-- Inventory Summary -->
+                        <Grid Grid.Row="0" Margin="0,0,0,20">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+                            
+                            <Border Grid.Column="0" Background="#00BCD4" CornerRadius="10" Padding="20" Margin="0,0,10,0">
+                                <StackPanel>
+                                    <TextBlock Text="💰 Vlera totale e stokut" FontSize="14" Foreground="White" FontWeight="Bold"/>
+                                    <TextBlock x:Name="TotalStockValueKPI" Text="0.00 €" FontSize="28" FontWeight="Bold" 
+                                               Foreground="White" Margin="0,10,0,0"/>
+                                </StackPanel>
+                            </Border>
+                            
+                            <Border Grid.Column="1" Background="#E91E63" CornerRadius="10" Padding="20" Margin="0,0,10,0">
+                                <StackPanel>
+                                    <TextBlock Text="⚠️ Stok i ulët" FontSize="14" Foreground="White" FontWeight="Bold"/>
+                                    <TextBlock x:Name="LowStockItemsKPI" Text="0 artikuj" FontSize="28" FontWeight="Bold" 
+                                               Foreground="White" Margin="0,10,0,0"/>
+                                </StackPanel>
+                            </Border>
+                            
+                            <Border Grid.Column="2" Background="#FF5722" CornerRadius="10" Padding="20">
+                                <StackPanel>
+                                    <TextBlock Text="📉 Pa lëvizje" FontSize="14" Foreground="White" FontWeight="Bold"/>
+                                    <TextBlock x:Name="SlowMovingItemsKPI" Text="0 artikuj" FontSize="28" FontWeight="Bold" 
+                                               Foreground="White" Margin="0,10,0,0"/>
+                                </StackPanel>
+                            </Border>
+                        </Grid>
+                        
+                        <!-- Stock Value by Category -->
+                        <Border Grid.Row="1" Style="{StaticResource ModernCard}" Margin="0,0,0,20">
+                            <Grid>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="*"/>
+                                </Grid.RowDefinitions>
+                                <TextBlock Grid.Row="0" Text="📊 Vlera e stokut sipas kategorive" 
+                                           FontSize="18" FontWeight="Bold" Margin="0,0,0,15"/>
+                                <lvc:CartesianChart Grid.Row="1" x:Name="StockValueChart"/>
+                            </Grid>
+                        </Border>
+                        
+                        <!-- Low Stock Items -->
+                        <Border Grid.Row="2" Style="{StaticResource ModernCard}">
+                            <Grid>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="*"/>
+                                </Grid.RowDefinitions>
+                                <TextBlock Grid.Row="0" Text="⚠️ Artikujt me stok të ulët" 
+                                           FontSize="18" FontWeight="Bold" Margin="0,0,0,15"/>
+                                <DataGrid Grid.Row="1" x:Name="LowStockGrid"
+                                          Style="{StaticResource EnterpriseDataGrid}"
+                                          AutoGenerateColumns="False" IsReadOnly="True">
+                                    <DataGrid.Columns>
+                                        <DataGridTextColumn Header="Barkodi" Binding="{Binding Barcode}" Width="*"/>
+                                        <DataGridTextColumn Header="Produkti" Binding="{Binding Name}" Width="2*"/>
+                                        <DataGridTextColumn Header="Sasia" Binding="{Binding StockQuantity, StringFormat=N0}" Width="*"/>
+                                        <DataGridTextColumn Header="Kategoria" Binding="{Binding Category}" Width="*"/>
+                                    </DataGrid.Columns>
+                                </DataGrid>
+                            </Grid>
+                        </Border>
+                    </Grid>
+                </ScrollViewer>
+            </TabItem>
+            
+            <!-- Financial Tab -->
+            <TabItem Header="💰 Analiza financiare">
+                <ScrollViewer>
+                    <Grid Margin="10">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="350"/>
+                            <RowDefinition Height="350"/>
+                        </Grid.RowDefinitions>
+                        
+                        <!-- Revenue vs Cost -->
+                        <Border Grid.Row="0" Style="{StaticResource ModernCard}" Margin="0,0,0,20">
+                            <Grid>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="*"/>
+                                </Grid.RowDefinitions>
+                                <TextBlock Grid.Row="0" Text="💹 Të ardhurat vs kostot" 
+                                           FontSize="18" FontWeight="Bold" Margin="0,0,0,15"/>
+                                <lvc:CartesianChart Grid.Row="1" x:Name="RevenueVsCostChart" LegendPosition="Bottom"/>
+                            </Grid>
+                        </Border>
+                        
+                        <!-- Profit Trend -->
+                        <Border Grid.Row="1" Style="{StaticResource ModernCard}">
+                            <Grid>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="*"/>
+                                </Grid.RowDefinitions>
+                                <TextBlock Grid.Row="0" Text="💎 Trendi i fitimit" 
+                                           FontSize="18" FontWeight="Bold" Margin="0,0,0,15"/>
+                                <lvc:CartesianChart Grid.Row="1" x:Name="ProfitTrendChart" LegendPosition="Bottom"/>
+                            </Grid>
+                        </Border>
+                    </Grid>
+                </ScrollViewer>
+            </TabItem>
+        </TabControl>
+        
+        <!-- Footer -->
+        <Grid Grid.Row="2" Margin="0,20,0,0">
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Left">
+                <Button Content="📊 Eksporto në excel" Style="{StaticResource ModernButton}"
+                        Click="ExportToExcel_Click" Width="180" Margin="0,0,10,0"
+                        Background="{StaticResource SuccessColor}"/>
+                <Button Content="🖨️ Printo raportin" Style="{StaticResource ModernButton}"
+                        Click="PrintReport_Click" Width="150"
+                        Background="{StaticResource PrimaryColor}"/>
+            </StackPanel>
+            <Button Content="🚪 Mbyll" Style="{StaticResource ModernButton}"
+                    Click="Close_Click" Width="120" HorizontalAlignment="Right"
+                    Background="{StaticResource DangerColor}"/>
+        </Grid>
+    </Grid>
+</Window>

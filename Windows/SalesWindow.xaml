@@ -1,0 +1,175 @@
+<Window x:Class="KosovaPOS.Windows.SalesWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="Shitjet - Sales Reports" Height="700" Width="1200"
+        WindowStartupLocation="CenterScreen"
+        Background="{StaticResource BackgroundColor}">
+    
+    <Grid Margin="20">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+        
+        <!-- Header -->
+        <Border Grid.Row="0" Style="{StaticResource ModernCard}" Margin="0,0,0,20">
+            <StackPanel>
+                <TextBlock Text="📊 Raportet e shitjeve" FontSize="28" FontWeight="Bold" 
+                           Foreground="{StaticResource PrimaryColor}"/>
+                <TextBlock Text="Shiko dhe analizon të gjitha shitjet" FontSize="14" 
+                           Foreground="{StaticResource TextSecondary}" Margin="0,5,0,0"/>
+            </StackPanel>
+        </Border>
+        
+        <!-- Filters -->
+        <Border Grid.Row="1" Style="{StaticResource ModernCard}" Margin="0,0,0,20">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+                
+                <TextBlock Grid.Column="0" Text="Nga data:" VerticalAlignment="Center" Margin="0,0,10,0"/>
+                <DatePicker Grid.Column="1" x:Name="FromDatePicker" Margin="0,0,20,0" 
+                            FontSize="14" Height="35"/>
+                
+                <TextBlock Grid.Column="2" Text="Deri në:" VerticalAlignment="Center" Margin="0,0,10,0"/>
+                <DatePicker Grid.Column="3" x:Name="ToDatePicker" Margin="0,0,20,0"
+                            FontSize="14" Height="35"/>
+                
+                <Button Grid.Column="4" Content="🔍 Filtro" Style="{StaticResource ModernButton}"
+                        Click="FilterButton_Click" Width="120"/>
+            </Grid>
+        </Border>
+        
+        <!-- Sales Grid -->
+        <Border Grid.Row="2" Style="{StaticResource ModernCard}">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
+                
+                <!-- Summary Cards -->
+                <Grid Grid.Row="0" Margin="0,0,0,20">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+                    
+                    <!-- Total Sales -->
+                    <Border Grid.Column="0" Background="#4CAF50" CornerRadius="8" Padding="15" Margin="0,0,10,0">
+                        <StackPanel>
+                            <TextBlock Text="💰" FontSize="24" HorizontalAlignment="Center"/>
+                            <TextBlock Text="Shitjet totale" FontSize="12" Foreground="White" 
+                                       HorizontalAlignment="Center" Margin="0,5,0,0"/>
+                            <TextBlock x:Name="TotalSalesText" Text="0.00 €" FontSize="20" FontWeight="Bold" 
+                                       Foreground="White" HorizontalAlignment="Center" Margin="0,5,0,0"/>
+                        </StackPanel>
+                    </Border>
+                    
+                    <!-- VAT Amount -->
+                    <Border Grid.Column="1" Background="#2196F3" CornerRadius="8" Padding="15" Margin="0,0,10,0">
+                        <StackPanel>
+                            <TextBlock Text="📄" FontSize="24" HorizontalAlignment="Center"/>
+                            <TextBlock Text="TVSH totale" FontSize="12" Foreground="White" 
+                                       HorizontalAlignment="Center" Margin="0,5,0,0"/>
+                            <TextBlock x:Name="TotalVATText" Text="0.00 €" FontSize="20" FontWeight="Bold" 
+                                       Foreground="White" HorizontalAlignment="Center" Margin="0,5,0,0"/>
+                        </StackPanel>
+                    </Border>
+                    
+                    <!-- Number of Receipts -->
+                    <Border Grid.Column="2" Background="#FF9800" CornerRadius="8" Padding="15" Margin="0,0,10,0">
+                        <StackPanel>
+                            <TextBlock Text="🧾" FontSize="24" HorizontalAlignment="Center"/>
+                            <TextBlock Text="Numri i faturave" FontSize="12" Foreground="White" 
+                                       HorizontalAlignment="Center" Margin="0,5,0,0"/>
+                            <TextBlock x:Name="TotalReceiptsText" Text="0" FontSize="20" FontWeight="Bold" 
+                                       Foreground="White" HorizontalAlignment="Center" Margin="0,5,0,0"/>
+                        </StackPanel>
+                    </Border>
+                    
+                    <!-- Average Sale -->
+                    <Border Grid.Column="3" Background="#9C27B0" CornerRadius="8" Padding="15">
+                        <StackPanel>
+                            <TextBlock Text="📊" FontSize="24" HorizontalAlignment="Center"/>
+                            <TextBlock Text="Mesatarja e shitjes" FontSize="12" Foreground="White" 
+                                       HorizontalAlignment="Center" Margin="0,5,0,0"/>
+                            <TextBlock x:Name="AverageSaleText" Text="0.00 €" FontSize="20" FontWeight="Bold" 
+                                       Foreground="White" HorizontalAlignment="Center" Margin="0,5,0,0"/>
+                        </StackPanel>
+                    </Border>
+                </Grid>
+                
+                <!-- Sales DataGrid -->
+                <DataGrid Grid.Row="1" x:Name="SalesDataGrid" 
+                          Style="{StaticResource POSDataGrid}"
+                          AutoGenerateColumns="False"
+                          SelectionChanged="SalesDataGrid_SelectionChanged"
+                          MouseDoubleClick="SalesDataGrid_MouseDoubleClick">
+                    <DataGrid.Columns>
+                        <DataGridTextColumn Header="ID" Binding="{Binding Id}" Width="60"/>
+                        <DataGridTextColumn Header="Nr. Faturës" Binding="{Binding ReceiptNumber}" Width="120"/>
+                        <DataGridTextColumn Header="Data" Binding="{Binding Date, StringFormat=dd/MM/yyyy HH:mm}" Width="150"/>
+                        <DataGridTextColumn Header="Klienti" Binding="{Binding CustomerName}" Width="*"/>
+                        <DataGridTextColumn Header="Totali (€)" Binding="{Binding TotalAmount, StringFormat=N2}" Width="120"/>
+                        <DataGridTextColumn Header="TVSH (€)" Binding="{Binding VATAmount, StringFormat=N2}" Width="100"/>
+                        <DataGridTextColumn Header="Mënyra e pagesës" Binding="{Binding PaymentMethod}" Width="140"/>
+                        <DataGridTextColumn Header="Arkëtari" Binding="{Binding Cashier}" Width="120"/>
+                    </DataGrid.Columns>
+                </DataGrid>
+                
+                <!-- Receipt Items -->
+                <Expander Grid.Row="2" Header="Artikujt e faturës së zgjedhur" Margin="0,10,0,0" IsExpanded="True">
+                    <DataGrid x:Name="ReceiptItemsDataGrid" 
+                              Style="{StaticResource POSDataGrid}"
+                              AutoGenerateColumns="False"
+                              MaxHeight="250">
+                        <DataGrid.Columns>
+                            <DataGridTextColumn Header="Barkodi" Binding="{Binding Barcode}" Width="120"/>
+                            <DataGridTextColumn Header="Emri i artikullit" Binding="{Binding ArticleName}" Width="*"/>
+                            <DataGridTextColumn Header="Sasia" Binding="{Binding Quantity, StringFormat=N2}" Width="80"/>
+                            <DataGridTextColumn Header="Çmimi (€)" Binding="{Binding Price, StringFormat=N2}" Width="100"/>
+                            <DataGridTextColumn Header="Zbritja %" Binding="{Binding DiscountPercent, StringFormat=N2}" Width="100"/>
+                            <DataGridTextColumn Header="TVSH %" Binding="{Binding VATRate, StringFormat=N0}" Width="80"/>
+                            <DataGridTextColumn Header="Totali (€)" Binding="{Binding TotalValue, StringFormat=N2}" Width="120"/>
+                        </DataGrid.Columns>
+                    </DataGrid>
+                </Expander>
+            </Grid>
+        </Border>
+        
+        <!-- Footer Buttons -->
+        <Grid Grid.Row="3" Margin="0,20,0,0">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="Auto"/>
+            </Grid.ColumnDefinitions>
+            
+            <Button Grid.Column="1" Content="�️ Shiko faturën" Style="{StaticResource ModernButton}"
+                    Click="ViewReceipt_Click" Width="150" Margin="0,0,10,0"/>
+            
+            <Button Grid.Column="2" Content="�📄 Printo faturën" Style="{StaticResource ModernButton}"
+                    Click="PrintReceipt_Click" Width="150" Margin="0,0,10,0"/>
+            
+            <Button Grid.Column="3" Content="📊 Eksporto në Excel" Style="{StaticResource ModernButton}"
+                    Click="ExportToExcel_Click" Width="180" Margin="0,0,10,0"/>
+            
+            <Button Grid.Column="4" Content="🚪 Mbyll" Style="{StaticResource ModernButton}"
+                    Click="Close_Click" Width="120" 
+                    Background="{StaticResource DangerColor}"/>
+        </Grid>
+    </Grid>
+</Window>
